@@ -44,63 +44,76 @@
 
 
 // js-code
-myForm = document.querySelector('#my-form');
-const nameInput = document.querySelector('#name');const
+const myForm = document.querySelector('#my-form');
+const nameInput = document.querySelector('#name');
 const mobileInput = document.querySelector('#mobile');
 const emailInput = document.querySelector('#email');
 const msg = document.querySelector('.msg');
 const userList = document.querySelector('#users');
 
-// function of store value in local storage when we click on submit button
-  const name = e.target.name.value;
-  const email = e.target.email.value;
-  const mobile = e.target.mobile.value;
-  localStorage.setItem('name',name);
-  localStorage.setItem('email', email);
-
 // Listen for form submit
 myForm.addEventListener('submit', onSubmit);
 
+// Function to handle form submission
 function onSubmit(e) {
   e.preventDefault();
-  
-  if(nameInput.value === '' || emailInput.value === '' ) {
-    // alert('Please enter all fields');
+
+  if (nameInput.value === '' || emailInput.value === '') {
     msg.classList.add('error');
     msg.innerHTML = 'Please enter all fields';
-
-    // Remove error after 3 seconds
     setTimeout(() => msg.remove(), 3000);
   } else {
-    // Create new list item with user
-    const li = document.createElement('li');
+    const user = {
+      name: nameInput.value,
+      email: emailInput.value,
+      mobile: mobileInput.value
+    };
 
-    // Add text node with input values
-    li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}: ${mobileInput.value}`));
+    // Retrieve existing user data from LocalStorage
+    const storedData = localStorage.getItem('userData');
+    let users = storedData ? JSON.parse(storedData) : [];
 
-    // Add HTML
-    // li.innerHTML = `<strong>${nameInput.value}</strong>e: ${emailInput.value}`;
+    // Ensure users is an array
+    if (!Array.isArray(users)) {
+      users = [];
+    }
 
-    // Append to ul
-    userList.appendChild(li);
+    users.push(user); // Add the new user to the existing users array
 
-    // Clear fields
+    // Store the updated user data in LocalStorage
+    localStorage.setItem('userData', JSON.stringify(users));
+
+    displayUsers(users);
+
     nameInput.value = '';
     emailInput.value = '';
-   
   }
 }
 
-// Create an object to store the user data
-const userData = {
-    name: nameInput.value,
-    email: emailInput.value,
-    mobile: mobileInput.value
-  };
-  
-  // Convert the userData object to a string
-  const userDataString = JSON.stringify(userData);
-  
-  // Store the userDataString in LocalStorage
-  localStorage.setItem('userData', userDataString);
+// Function to display users
+function displayUsers(users) {
+  userList.innerHTML = ''; // Clear existing list items
+
+  users.forEach(user => {
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(`${user.name}: ${user.email}: ${user.mobile}`));
+    userList.appendChild(li);
+  });
+}
+
+// Perform operations after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Retrieve existing user data from LocalStorage
+  const storedData = localStorage.getItem('userData');
+  let users = storedData ? JSON.parse(storedData) : [];
+
+  // Ensure users is an array
+  if (!Array.isArray(users)) {
+    users = [];
+  }
+
+  displayUsers(users);
+});
+
+
   
