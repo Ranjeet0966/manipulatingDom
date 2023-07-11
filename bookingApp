@@ -51,6 +51,13 @@ const emailInput = document.querySelector('#email');
 const msg = document.querySelector('.msg');
 const userList = document.querySelector('#users');
 
+// function of store value in local storage when we click on submit button
+  const name = e.target.name.value;
+  const email = e.target.email.value;
+  const mobile = e.target.mobile.value;
+  localStorage.setItem('name',name);
+  localStorage.setItem('email', email);
+
 // Listen for form submit
 myForm.addEventListener('submit', onSubmit);
 
