@@ -63,6 +63,7 @@ function onSubmit(e) {
     msg.innerHTML = 'Please enter all fields';
     setTimeout(() => msg.remove(), 3000);
   } else {
+// code for storing more users data in local storage
     const user = {
       name: nameInput.value,
       email: emailInput.value,
@@ -77,7 +78,7 @@ function onSubmit(e) {
     if (!Array.isArray(users)) {
       users = [];
     }
-
+   
     users.push(user); // Add the new user to the existing users array
 
     // Store the updated user data in LocalStorage
