@@ -117,6 +117,37 @@ function deleteUser(e) {
     displayUsers(users);
   }
 
+// Function to handle user actions (edit/delete)
+function handleUserAction(e) {
+  if (e.target.classList.contains('edit-btn')) {
+    const userIndex = e.target.dataset.index;
+    const user = users[userIndex];
+
+    // Update the email input with the user's current email address
+    emailInput.value = user.email;
+
+    // Remove the user from the array (to be re-added with updated email)
+    users.splice(userIndex, 1);
+
+    // Update LocalStorage
+    localStorage.setItem('userData', JSON.stringify(users));
+
+    // Re-display the users
+    displayUsers(users);
+  } else if (e.target.classList.contains('delete-btn')) {
+    const userIndex = e.target.dataset.index;
+
+    // Remove the user from the array
+    users.splice(userIndex, 1);
+
+    // Update LocalStorage
+    localStorage.setItem('userData', JSON.stringify(users));
+
+    // Re-display the users
+    displayUsers(users);
+  }
+}
+
 // Perform operations after the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
   // Retrieve existing user data from LocalStorage
