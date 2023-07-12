@@ -101,6 +101,21 @@ function displayUsers(users) {
     userList.appendChild(li);
   });
 }
+// function to delete a user data from UI and local storage
+function deleteUser(e) {
+  if (e.target.classList.contains('delete-btn')) {
+    const userIndex = e.target.dataset.index;
+    let users = JSON.parse(localStorage.getItem('userData'));
+
+    // Remove the user from the array
+    users.splice(userIndex, 1);
+
+    // Update LocalStorage
+    localStorage.setItem('userData', JSON.stringify(users));
+
+    // Re-display the users
+    displayUsers(users);
+  }
 
 // Perform operations after the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
